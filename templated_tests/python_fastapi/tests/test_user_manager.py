@@ -23,3 +23,60 @@ class TestUserManager:
         assert user.full_name == valid_user_data["full_name"]
         assert user.active == True
         assert isinstance(user.created_at, datetime)
+
+    def test_deactivate_non_existent_user(self, user_manager):
+        result = user_manager.deactivate_user("nonexistentuser")
+        assert result is False
+
+
+    def test_search_users_by_query(self, user_manager, valid_user_data):
+        user_manager.create_user(**valid_user_data)
+        user_manager.create_user("anotheruser", "another@example.com", "Another User")
+        results = user_manager.search_users("test")
+        assert len(results) == 1
+        assert results[0].username == "testuser"
+        results = user_manager.search_users("user")
+        assert len(results) == 2
+
+
+    def test_deactivate_existing_user(self, user_manager, valid_user_data):
+        user_manager.create_user(**valid_user_data)
+        result = user_manager.deactivate_user("testuser")
+        assert result is True
+        user = user_manager.get_user("testuser")
+        assert user is not None
+        assert user.active is False
+
+
+    def test_update_existing_user(self, user_manager, valid_user_data):
+        user_manager.create_user(**valid_user_data)
+        updated_user = user_manager.update_user("testuser", full_name="Updated User", email="updated@example.com")
+        assert updated_user is not None
+        assert updated_user.full_name == "Updated User"
+        assert updated_user.email == "updated@example.com"
+
+
+    def test_update_user_non_existent(self, user_manager):
+        user = user_manager.update_user("nonexistentuser", full_name="New Name")
+        assert user is None
+
+
+    def test_get_user_non_existent(self, user_manager):
+        user = user_manager.get_user("nonexistentuser")
+        assert user is None
+
+
+    def test_create_user_invalid_username(self, user_manager):
+        invalid_user_data = {
+            "username": "ab",
+            "email": "test2@example.com",
+            "full_name": "Test User 2"
+        }
+        with pytest.raises(ValueError, match="Invalid username format"):
+            user_manager.create_user(**invalid_user_data)
+
+
+    def test_create_user_existing_username(self, user_manager, valid_user_data):
+        user_manager.create_user(**valid_user_data)
+        with pytest.raises(ValueError, match="Username already exists"):
+            user_manager.create_user(**valid_user_data)
