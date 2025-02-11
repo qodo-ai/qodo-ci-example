@@ -34,7 +34,7 @@ jobs:
         working-directory: templated_tests/typescript/calculator
 
       - name: Qodo Cover
-        uses: qodo-ai/qodo-ci/.github/actions/qodo-cover@v0.1.5
+        uses: qodo-ai/qodo-ci/.github/actions/qodo-cover@v0.1.6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           project_language: typescript
