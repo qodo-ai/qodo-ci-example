@@ -27,4 +27,10 @@ class CalculatorTest extends TestCase {
         $calc = new Calculator();
         $this->assertEquals(8, $calc->power(2, 3));
     }
+
+    public function testFactorialPositive() {
+        $calc = new Calculator();
+        $this->assertEquals(120, $calc->factorial(5));
+    }
+
 }
