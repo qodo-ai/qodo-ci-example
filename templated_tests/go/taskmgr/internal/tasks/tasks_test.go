@@ -48,3 +48,177 @@ func TestTaskManager(t *testing.T) {
 		t.Errorf("Expected persisted task 'First' to be done, got %v", newList)
 	}
 }
+
+func TestMarkDoneIndexOutOfRange(t *testing.T) {
+    dir, err := ioutil.TempDir("", "taskmgr_tasks_test")
+    if err != nil {
+        t.Fatalf("Failed to create temp dir: %v", err)
+    }
+    defer os.RemoveAll(dir)
+
+    testFile := filepath.Join(dir, "tasks.json")
+    store := NewFileStore(testFile)
+    manager := NewTaskManager(store)
+
+    err = manager.Add(Task{Title: "First"})
+    if err != nil {
+        t.Fatal("Error adding task:", err)
+    }
+
+    err = manager.MarkDone("10")
+    if err == nil || err.Error() != "invalid index" {
+        t.Errorf("Expected 'invalid index' error, got %v", err)
+    }
+}
+
+
+func TestFindByDescriptionNoMatch(t *testing.T) {
+    dir, err := ioutil.TempDir("", "taskmgr_tasks_test")
+    if err != nil {
+        t.Fatalf("Failed to create temp dir: %v", err)
+    }
+    defer os.RemoveAll(dir)
+
+    testFile := filepath.Join(dir, "tasks.json")
+    store := NewFileStore(testFile)
+    manager := NewTaskManager(store)
+
+    // Add tasks with different descriptions
+    manager.Add(Task{Title: "First", Description: "Desc1"})
+    manager.Add(Task{Title: "Second", Description: "Desc2"})
+
+    results := manager.FindByDescription("NonExistentDesc")
+    if len(results) != 0 {
+        t.Errorf("Expected no tasks to match, got %v", results)
+    }
+}
+
+
+func TestCountDoneNoTasksDone(t *testing.T) {
+    dir, err := ioutil.TempDir("", "taskmgr_tasks_test")
+    if err != nil {
+        t.Fatalf("Failed to create temp dir: %v", err)
+    }
+    defer os.RemoveAll(dir)
+
+    testFile := filepath.Join(dir, "tasks.json")
+    store := NewFileStore(testFile)
+    manager := NewTaskManager(store)
+
+    // Add tasks but do not mark them as done
+    manager.Add(Task{Title: "First"})
+    manager.Add(Task{Title: "Second"})
+
+    count := manager.CountDone()
+    if count != 0 {
+        t.Errorf("Expected 0 tasks done, got %d", count)
+    }
+}
+
+
+func TestUndoDoneInvalidIndex(t *testing.T) {
+    dir, err := ioutil.TempDir("", "taskmgr_tasks_test")
+    if err != nil {
+        t.Fatalf("Failed to create temp dir: %v", err)
+    }
+    defer os.RemoveAll(dir)
+
+    testFile := filepath.Join(dir, "tasks.json")
+    store := NewFileStore(testFile)
+    manager := NewTaskManager(store)
+
+    // Add a task to ensure the list is not empty
+    manager.Add(Task{Title: "First"})
+
+    err = manager.UndoDone("1") // Invalid index
+    if err == nil || err.Error() != "invalid index" {
+        t.Errorf("Expected 'invalid index' error, got %v", err)
+    }
+}
+
+
+func TestRemoveInvalidIndex(t *testing.T) {
+    dir, err := ioutil.TempDir("", "taskmgr_tasks_test")
+    if err != nil {
+        t.Fatalf("Failed to create temp dir: %v", err)
+    }
+    defer os.RemoveAll(dir)
+
+    testFile := filepath.Join(dir, "tasks.json")
+    store := NewFileStore(testFile)
+    manager := NewTaskManager(store)
+
+    // Add a task to ensure the list is not empty
+    manager.Add(Task{Title: "First"})
+
+    err = manager.Remove("1") // Invalid index
+    if err == nil || err.Error() != "invalid index" {
+        t.Errorf("Expected 'invalid index' error, got %v", err)
+    }
+}
+
+
+func TestBulkAdd(t *testing.T) {
+    dir, err := ioutil.TempDir("", "taskmgr_tasks_test")
+    if err != nil {
+        t.Fatalf("Failed to create temp dir: %v", err)
+    }
+    defer os.RemoveAll(dir)
+
+    testFile := filepath.Join(dir, "tasks.json")
+    store := NewFileStore(testFile)
+    manager := NewTaskManager(store)
+
+    tasksToAdd := []Task{
+        {Title: "Task1"},
+        {Title: "Task2"},
+        {Title: "Task3"},
+    }
+    err = manager.BulkAdd(tasksToAdd)
+    if err != nil {
+        t.Fatal("Error in BulkAdd:", err)
+    }
+
+    list := manager.List()
+    if len(list) != 3 {
+        t.Errorf("Expected 3 tasks, got %d", len(list))
+    }
+}
+
+
+func TestFindByTitleNotFound(t *testing.T) {
+    dir, err := ioutil.TempDir("", "taskmgr_tasks_test")
+    if err != nil {
+        t.Fatalf("Failed to create temp dir: %v", err)
+    }
+    defer os.RemoveAll(dir)
+
+    testFile := filepath.Join(dir, "tasks.json")
+    store := NewFileStore(testFile)
+    manager := NewTaskManager(store)
+
+    manager.Add(Task{Title: "First"})
+    result := manager.FindByTitle("NonExistent")
+    if result != nil {
+        t.Errorf("Expected nil for non-existent title, got %v", result)
+    }
+}
+
+
+func TestMarkDoneInvalidIndex(t *testing.T) {
+    dir, err := ioutil.TempDir("", "taskmgr_tasks_test")
+    if err != nil {
+        t.Fatalf("Failed to create temp dir: %v", err)
+    }
+    defer os.RemoveAll(dir)
+
+    testFile := filepath.Join(dir, "tasks.json")
+    store := NewFileStore(testFile)
+    manager := NewTaskManager(store)
+
+    err = manager.MarkDone("invalid")
+    if err == nil {
+        t.Error("Expected error for invalid index, got nil")
+    }
+}
+

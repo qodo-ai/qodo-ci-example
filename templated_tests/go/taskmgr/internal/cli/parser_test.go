@@ -11,3 +11,14 @@ func TestParseArgs(t *testing.T) {
 		t.Errorf("Expected args ['MyTask'], got %v", rest)
 	}
 }
+
+func TestParseArgsEmptyInput(t *testing.T) {
+    cmd, rest := ParseArgs([]string{})
+    if cmd != "" {
+        t.Errorf("Expected cmd '', got '%s'", cmd)
+    }
+    if rest != nil {
+        t.Errorf("Expected args nil, got %v", rest)
+    }
+}
+

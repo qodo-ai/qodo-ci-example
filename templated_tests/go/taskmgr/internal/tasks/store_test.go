@@ -58,3 +58,78 @@ func TestFileStore(t *testing.T) {
 		t.Errorf("Expected persisted 'Updated' task, got %v", list)
 	}
 }
+
+func TestRemoveValidIndex(t *testing.T) {
+    dir, err := ioutil.TempDir("", "taskmgr_test")
+    if err != nil {
+        t.Fatalf("Failed to create temp dir: %v", err)
+    }
+    defer os.RemoveAll(dir)
+
+    testFile := filepath.Join(dir, "tasks.json")
+    store := NewFileStore(testFile)
+
+    // Add tasks
+    if err := store.Add(Task{Title: "Task 1"}); err != nil {
+        t.Fatalf("Add returned an error: %v", err)
+    }
+    if err := store.Add(Task{Title: "Task 2"}); err != nil {
+        t.Fatalf("Add returned an error: %v", err)
+    }
+
+    // Remove the first task
+    err = store.Remove(0)
+    if err != nil {
+        t.Errorf("Remove returned an error: %v", err)
+    }
+
+    list := store.List()
+    if len(list) != 1 || list[0].Title != "Task 2" {
+        t.Errorf("Expected one task 'Task 2', got %v", list)
+    }
+}
+
+
+func TestListInvalidJSON(t *testing.T) {
+    dir, err := ioutil.TempDir("", "taskmgr_test")
+    if err != nil {
+        t.Fatalf("Failed to create temp dir: %v", err)
+    }
+    defer os.RemoveAll(dir)
+
+    testFile := filepath.Join(dir, "tasks.json")
+    store := NewFileStore(testFile)
+
+    // Write invalid JSON to the file
+    if err := ioutil.WriteFile(testFile, []byte("{invalid json"), 0644); err != nil {
+        t.Fatalf("Failed to write to test file: %v", err)
+    }
+
+    list := store.List()
+    if len(list) != 0 {
+        t.Errorf("Expected empty list due to invalid JSON, got %d tasks", len(list))
+    }
+}
+
+
+func TestAddJSONUnmarshalError(t *testing.T) {
+    dir, err := ioutil.TempDir("", "taskmgr_test")
+    if err != nil {
+        t.Fatalf("Failed to create temp dir: %v", err)
+    }
+    defer os.RemoveAll(dir)
+
+    testFile := filepath.Join(dir, "tasks.json")
+    store := NewFileStore(testFile)
+
+    // Write invalid JSON to the file
+    if err := ioutil.WriteFile(testFile, []byte("{invalid json"), 0644); err != nil {
+        t.Fatalf("Failed to write to test file: %v", err)
+    }
+
+    err = store.Add(Task{Title: "Example"})
+    if err == nil {
+        t.Error("Expected error when adding task due to JSON unmarshal error, got nil")
+    }
+}
+
