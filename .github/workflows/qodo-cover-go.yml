@@ -38,7 +38,7 @@ jobs:
           project_root: templated_tests/go/taskmgr
           code_coverage_report_path: templated_tests/go/taskmgr/coverage.xml
           test_command: "go test ./... -coverprofile=coverage.out && gocover-cobertura < coverage.out > coverage.xml"
-          model: gpt-4o
+          model: gpt-4o-2024-11-20
           desired_coverage: ${{ github.event.inputs.desired_coverage }}
           run_each_test_separately: "false"
           branch: ${{ github.ref_name }}

@@ -50,7 +50,7 @@ jobs:
           project_root: templated_tests/php/myapp
           code_coverage_report_path: templated_tests/php/myapp/coverage.xml
           test_command: "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-cobertura coverage.xml --disable-coverage-ignore"
-          model: gpt-4o
+          model: gpt-4o-2024-11-20
           desired_coverage: ${{ github.event.inputs.desired_coverage }}
           branch: ${{ github.ref_name }}
         env:

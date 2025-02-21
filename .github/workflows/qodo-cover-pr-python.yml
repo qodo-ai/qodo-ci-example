@@ -47,7 +47,7 @@ jobs:
           project_root: templated_tests/python_fastapi
           code_coverage_report_path: templated_tests/python_fastapi/coverage.xml
           test_command: "pytest --cov=. --cov-report=xml --cov-report=term"
-          model: gpt-4o
+          model: gpt-4o-2024-11-20
           desired_coverage: 70
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
