@@ -51,4 +51,5 @@ pip-delete-this-directory.txt
 .env
 .secrets
 
-# binary
+# ide
+.qodo

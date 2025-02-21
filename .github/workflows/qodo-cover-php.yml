@@ -43,7 +43,7 @@ jobs:
         working-directory: templated_tests/php/myapp
 
       - name: Qodo Cover
-        uses: qodo-ai/qodo-ci/.github/actions/qodo-cover@v0.1.10
+        uses: qodo-ai/qodo-ci/.github/actions/qodo-cover@v0.1.12
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           project_language: php
