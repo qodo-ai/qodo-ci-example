@@ -41,7 +41,7 @@ jobs:
           project_root: templated_tests/javascript/calculator
           code_coverage_report_path: templated_tests/javascript/calculator/coverage/cobertura-coverage.xml
           test_command: "npm run test -- tests/**/*.test.js"
-          model: gpt-4o
+          model: gpt-4o-2024-11-20
           desired_coverage: ${{ github.event.inputs.desired_coverage }}
           test_folder: tests
           source_folder: src
