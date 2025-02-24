@@ -15,5 +15,25 @@ describe('AdvancedMath Functions', () => {
         it('should throw error for negative input', () => {
             expect(() => factorial(-1)).to.throw('Cannot compute factorial of a negative number');
         });
+
+    it('should correctly compute cosine of a number', () => {
+        expect(cos(Math.PI)).to.be.closeTo(-1, 0.0001);
+    });
+
+
+    it('should correctly compute sine of a number', () => {
+        expect(sin(Math.PI / 2)).to.be.closeTo(1, 0.0001);
+    });
+
+
+    it('should correctly compute square root of a positive number', () => {
+        expect(sqrt(9)).to.equal(3);
+    });
+
+
+    it('should throw error for negative input in sqrt', () => {
+        expect(() => sqrt(-4)).to.throw('Cannot compute square root of a negative number in real domain');
+    });
+
     });
 });

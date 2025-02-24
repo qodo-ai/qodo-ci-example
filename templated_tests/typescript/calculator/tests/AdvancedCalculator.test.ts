@@ -20,5 +20,25 @@ describe('AdvancedCalculator', () => {
         expect(calc.onDisplay).to.equal('120');
     });
 
+    it('should throw an error when sqrt is called with no number on display', () => {
+        expect(() => calc.sqrt()).to.throw('No number on display to compute sqrt');
+    });
+
+
+    it('should compute square root correctly for a positive number', () => {
+        calc.buttonPressed({ type: 'number', value: '16' });
+        expect(calc.onDisplay).to.equal('16');
+    
+        const result = calc.sqrt();
+        expect(result).to.equal(4);
+        expect(calc.onDisplay).to.equal('4');
+    });
+
+
+    it('should throw an error when factorial is called with no number on display', () => {
+        expect(() => calc.factorial()).to.throw('No number on display to compute factorial');
+    });
+
+
 
 });
