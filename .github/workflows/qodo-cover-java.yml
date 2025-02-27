@@ -28,7 +28,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Qodo Cover
-        uses: qodo-ai/qodo-ci/.github/actions/qodo-cover@v0.1.12
+        uses: qodo-ai/qodo-ci/.github/actions/qodo-cover@v0.1.14
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           project_language: java
