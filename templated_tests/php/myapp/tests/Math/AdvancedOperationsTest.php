@@ -13,5 +13,33 @@ class AdvancedOperationsTest extends TestCase {
         $this->assertEquals(16, $adv->power(2, 4));
     }
 
+    public function testFactorialPositiveNumber() {
+        $adv = new AdvancedOperations();
+        $this->assertEquals(120, $adv->factorial(5));
+    }
+
+
+    public function testFactorialNegativeNumber() {
+        $adv = new AdvancedOperations();
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("No factorial for negative numbers");
+        $adv->factorial(-5);
+    }
+
+
+    public function testFactorialZero() {
+        $adv = new AdvancedOperations();
+        $this->assertEquals(1, $adv->factorial(0));
+    }
+
+
+    public function testSqrtNegativeNumber() {
+        $adv = new AdvancedOperations();
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Cannot take sqrt of negative number");
+        $adv->sqrt(-4);
+    }
+
+
     // We do not test factorial() on purpose, so coverage will not be 100%.
 }
