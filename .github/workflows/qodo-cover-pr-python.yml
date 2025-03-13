@@ -40,7 +40,7 @@ jobs:
           pip install -r templated_tests/python_fastapi/requirements.txt
 
       - name: Qodo Cover
-        uses: qodo-ai/qodo-ci/.github/actions/qodo-cover-pr@v0.1.15
+        uses: qodo-ai/qodo-ci/.github/actions/qodo-cover-pr@v0.1.16
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           project_language: python
@@ -49,5 +49,7 @@ jobs:
           test_command: "pytest --cov=. --cov-report=xml --cov-report=term"
           model: gpt-4o-2024-11-20
           desired_coverage: 70
+          diff_coverage: true
+          branch: main
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
