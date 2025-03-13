@@ -123,3 +123,30 @@ async def echo(message: str):
     Returns the same message that is sent to it.
     """
     return {"message": message}
+
+@app.get("/fizzbuzz/{number}")
+async def fizzbuzz(number: int):
+    """
+    Return the FizzBuzz sequence up to the specified number.
+    
+    Parameters:
+    - number (int): The upper limit of the sequence
+    
+    Returns:
+    - A dictionary containing the FizzBuzz sequence
+    """
+    if number < 1:
+        raise HTTPException(status_code=400, detail="Number must be at least 1")
+    
+    sequence = []
+    for i in range(1, number + 1):
+        if i % 3 == 0 and i % 5 == 0:
+            sequence.append("FizzBuzz")
+        elif i % 3 == 0:
+            sequence.append("Fizz")
+        elif i % 5 == 0:
+            sequence.append("Buzz")
+        else:
+            sequence.append(str(i))
+    
+    return {"sequence": sequence}
