@@ -1,4 +1,3 @@
 [
-    "./myapp/app.py",
-    "./myapp/user_manager.py"
+    "./myapp/app.py"
 ]
