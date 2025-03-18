@@ -124,6 +124,7 @@ async def echo(message: str):
     """
     return {"message": message}
 
+
 @app.get("/fizzbuzz/{number}")
 async def fizzbuzz(number: int):
     """
