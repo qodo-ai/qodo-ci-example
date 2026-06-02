@@ -13,5 +13,17 @@ public class JokeHandlerTest {
         JokeHandler jokeHandler = new JokeHandler();
       assertTrue(true);
     }
+    public void test_joke_handler2_creation() {
+        JokeHandler jokeHandler = new JokeHandler();
+      assertTrue(true);
+    }
+    public void test_joke_handler3_creation() {
+        JokeHandler jokeHandler = new JokeHandler();
+      assertTrue(true);
+    }
+    public void test_joke_handler4_creation() {
+        JokeHandler jokeHandler = new JokeHandler();
+      assertTrue(true);
+    }
 
 }
