@@ -8,13 +8,6 @@ RUN go install github.com/boumenot/gocover-cobertura@v1.3.0
 # ------------------------
 
 # Install system dependencies required by cover-agent-pro
-RUN apt-get update && apt-get install -y \
-    wget \
-    sqlite3 \
-    libsqlite3-dev \
-    jq \
-    python3 \
-    python3-pip
 
 # Force global installation of jinja2-cli
 RUN pip3 install --break-system-packages jinja2-cli
