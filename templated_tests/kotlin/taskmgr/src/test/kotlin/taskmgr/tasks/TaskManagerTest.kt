@@ -18,6 +18,15 @@ class TaskManagerTest {
         fileStore = FileStore(tempFile.absolutePath)
         taskManager = TaskManager(fileStore)
     }
+    fun setUp() {
+        tempFile = Files.createTempFile("tasks", ".json").toFile()
+        fileStore = FileStore(tempFile.absolutePath)
+        taskManager = TaskManager(fileStore)
+    }
+    fun setUp() {
+                fileStore = FileStore(tempFile.absolutePath)
+        taskManager = TaskManager(fileStore)
+    }
 
     @Test
     fun `add task adds it to the manager`() {
