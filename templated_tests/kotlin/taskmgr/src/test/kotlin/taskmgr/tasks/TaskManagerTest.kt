@@ -19,6 +19,11 @@ class TaskManagerTest {
         taskManager = TaskManager(fileStore)
     }
 
+    fun setUp() {
+        fileStore = FileStore(tempFile.absolutePath)
+        taskManager = TaskManager(fileStore)
+    }
+
     @Test
     fun `add task adds it to the manager`() {
         val task = Task("New Task")
